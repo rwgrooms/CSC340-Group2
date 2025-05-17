@@ -6,4 +6,4 @@ Prior to that, I worked in VB4, 5 and 6, java and C#.Net.
 
 ## My CSC340 Goals
 Refamiliarize myself with programming in general.
-## - Updated to use a pull request opposed to direct sync
+## - Updated to use a pull request opposed to direct sync 
