@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Profile</title>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@3.0.0/build/pure-min.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2em;
+      margin: 0;
+    }
+
+    .pure-form input[type="text"],
+    .pure-form input[type="email"],
+    .pure-form input[type="tel"],
+    .pure-form input[type="number"],
+    .pure-form input[type="password"] {
+      width: 100%;
+    }
+
+    .pure-g > div {
+      box-sizing: border-box;
+    }
+
+    .radio-group {
+      margin-top: 2em;
+    }
+
+    .button-group {
+      margin-top: 2em;
+      text-align: center;
+    }
+
+    .pure-button-danger {
+      background: #e00;
+      color: white;
+    }
+
+    .pure-button-danger:hover {
+      background: #c00;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Edit Profile</h2>
+
+  <form class="pure-form pure-form-stacked" id="editForm">
+    <div class="pure-g">
+      <!-- Left Column -->
+      <div class="pure-u-1-2" style="padding-right: 1em;">
+        <label for="firstName">First Name</label>
+        <input id="firstName" type="text" placeholder="First Name" required>
+
+        <label for="phone">Phone Number</label>
+        <input id="phone" type="tel" placeholder="123-456-7890" required>
+
+        <label for="address1">Address Line 1</label>
+        <input id="address1" type="text" placeholder="Street address" required>
+
+        <label for="city">City</label>
+        <input id="city" type="text" placeholder="City" required>
+
+        <label for="credit">Credit Score</label>
+        <input id="credit" type="number" min="300" max="850" placeholder="e.g., 700" required>
+      </div>
+
+      <!-- Right Column -->
+      <div class="pure-u-1-2" style="padding-left: 1em;">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" type="text" placeholder="Last Name" required>
+
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@example.com" required>
+
+        <label for="address2">Address Line 2</label>
+        <input id="address2" type="text" placeholder="Apt, suite, unit (optional)">
+
+        <label for="state">State</label>
+        <input id="state" type="text" placeholder="State" required>
+
+        <label for="zip">ZIP Code</label>
+        <input id="zip" type="text" placeholder="ZIP Code" required>
+      </div>
+    </div>
+
+    <!-- Full-width bottom fields -->
+    <label for="username" style="margin-top: 1em;">Username</label>
+    <input id="username" type="text" placeholder="Choose a username" required>
+
+    <label for="password">Password</label>
+    <input id="password" type="password" placeholder="Create a password" required>
+
+    <div class="radio-group">
+      <label>I'm registered as:</label>
+      <label class="pure-radio"><input type="radio" name="role" value="Buyer" required> Buyer</label>
+      <label class="pure-radio"><input type="radio" name="role" value="Seller"> Seller</label>
+      <label class="pure-radio"><input type="radio" name="role" value="Both"> Both</label>
+    </div>
+
+    <div class="button-group">
+      <button type="submit" class="pure-button pure-button-primary">Save</button>
+      <button type="button" class="pure-button pure-button-danger" id="deleteBtn">Delete Profile</button>
+    </div>
+  </form>
+
+  <script>
+    // Redirect to welcome after saving
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      parent.frames['mainContent'].location.href = 'welcome.html';
+    });
+
+    // Prompt before deleting
+    document.getElementById('deleteBtn').addEventListener('click', function() {
+      if (confirm("Are you sure? This will remove your access.")) {
+        parent.location.href = 'login.html'; // redirects the whole page out of dashboard
+      }
+    });
+  </script>
+
+</body>
+</html>

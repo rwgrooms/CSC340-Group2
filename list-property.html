@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>List Property</title>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@3.0.0/build/pure-min.css" />
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2em;
+    }
+
+    input, .drop-area {
+      width: 100%;
+      padding: 0.5em;
+      margin-bottom: 1em;
+      box-sizing: border-box;
+    }
+
+    textarea {
+        width: 100%;
+    }
+
+    .drop-area {
+      border: 2px dashed #ccc;
+      border-radius: 5px;
+      text-align: center;
+      padding: 1em;
+      cursor: pointer;
+      background-color: #fafafa;
+    }
+
+    .drop-area:hover {
+      border-color: #0078e7;
+      background-color: #f0f8ff;
+    }
+
+    .preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
+      margin-top: 1em;
+    }
+
+    .preview img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    function ListProperty() {
+      const [files, setFiles] = useState([]);
+
+      const handleDrop = (e) => {
+        e.preventDefault();
+        const newFiles = [...e.dataTransfer.files].filter(file => file.type.startsWith('image/'));
+        setFiles(prev => [...prev, ...newFiles]);
+      };
+
+      const handleDragOver = (e) => e.preventDefault();
+
+      return (
+        <div>
+          <h1 className="text-2xl">List Property</h1>
+
+          <form className="pure-form pure-form-stacked" onSubmit={e => e.preventDefault()}>
+            <label>Address Line 1</label>
+            <input type="text" placeholder="Street address" required />
+
+            <label>Address Line 2</label>
+            <input type="text" placeholder="Apt, Suite, etc." />
+
+            <label>City</label>
+            <input type="text" required />
+
+            <label>State</label>
+            <input type="text" required />
+
+            <label>ZIP Code</label>
+            <input type="text" required />
+
+            <label>Description</label>
+            <textarea type="text" rows="5" required />
+
+            <label>Asking Price</label>
+            <input type="number" placeholder="$" required />
+
+            <label>Good Faith Deposit (required from buyer to avoid non-serious offers)</label>
+            <input type="number" placeholder="$" required />
+
+            <div
+              className="drop-area"
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+            >
+              <p>Drag & drop images here</p>
+              <div className="preview">
+                {files.map((file, i) => (
+                  <img key={i} src={URL.createObjectURL(file)} alt={`preview-${i}`} />
+                ))}
+              </div>
+            </div>
+
+            <button type="submit" className="pure-button pure-button-primary" style={{ marginTop: '1em' }}>
+              Submit Listing
+            </button>
+          </form>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<ListProperty />);
+  </script>
+</body>
+</html>

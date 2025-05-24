@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>View Offers</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@3.0.0/build/pure-min.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5em;
+    }
+
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1em;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 0.75em;
+    }
+
+    strong {
+      display: inline-block;
+      min-width: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const offers = [
+      {
+        id: 1,
+        image: 'images/front.png',
+        deposit: 10000,
+        askingPrice: 350000,
+        offerPrice: 340000,
+      },
+      {
+        id: 2,
+        image: 'images/front.png',
+        deposit: 12000,
+        askingPrice: 475000,
+        offerPrice: 460000,
+      },
+      {
+        id: 3,
+        image: 'images/front.png',
+        deposit: 9000,
+        askingPrice: 290000,
+        offerPrice: 280000,
+      },
+    ];
+
+    function ViewOffers() {
+      const handleCounterOffer = (id) => {
+        console.log(`Countering offer on ID: ${id}`);
+        // redirect or open modal logic could go here
+      };
+
+      return (
+        <div>
+          <h1 className="text-2xl font-bold mb-4">View Offers</h1>
+          <div className="grid">
+            {offers.map((offer) => (
+              <div key={offer.id} className="card">
+                <img src={offer.image} alt="Offer" />
+                <p><strong>Good Faith Deposit:</strong> ${offer.deposit.toLocaleString()}</p>
+                <p><strong>Asking Price:</strong> ${offer.askingPrice.toLocaleString()}</p>
+                <p><strong>Offer Price:</strong> ${offer.offerPrice.toLocaleString()}</p>
+                <button
+                  className="pure-button pure-button-primary mt-2"
+                  onClick={() => handleCounterOffer(offer.id)}
+                >
+                  Counter Offer
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<ViewOffers />);
+  </script>
+</body>
+</html>
