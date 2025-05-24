@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>View Listings</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@3.0.0/build/pure-min.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2em;
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5em;
+    }
+
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1em;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 0.75em;
+    }
+
+    input {
+      margin-bottom: 1.5em;
+      padding: 0.5em;
+      width: 100%;
+      max-width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    strong {
+      display: inline-block;
+      min-width: 130px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const sampleListings = [
+      {
+        id: 1,
+        image: 'images/front.png',
+        description: 'Beautiful 3-bedroom home with a spacious backyard.',
+        zipcode: '12345',
+        price: 350000,
+        deposit: 10000,
+      },
+      {
+        id: 2,
+        image: 'images/front.png',
+        description: 'Beautiful 4-bedroom home with a spacious backyard.',
+        zipcode: '67890',
+        price: 475000,
+        deposit: 15000,
+      },
+      {
+        id: 3,
+        image: 'images/front.png',
+        description: 'Beautiful 5-bedroom home with a spacious backyard.',
+        zipcode: '24680',
+        price: 290000,
+        deposit: 7500,
+      },
+    ];
+
+    function ViewListings() {
+      const [filterZip, setFilterZip] = useState('');
+
+      const filtered = sampleListings.filter(l =>
+        l.zipcode.includes(filterZip)
+      );
+
+      function handleMakeOffer(id) {
+          alert('Making offer on listing ID:' + id)
+          console.log('Making offer on listing ID:', id);
+      }
+
+      return (
+        <div>
+          <h1 className="text-2xl font-bold mb-4">View Listings</h1>
+
+          <input
+            type="text"
+            placeholder="Filter by ZIP code"
+            value={filterZip}
+            onChange={e => setFilterZip(e.target.value)}
+          />
+
+          <div className="grid">
+            {filtered.map(listing => (
+              <div key={listing.id} className="card">
+                <img src={listing.image} alt="Property" />
+                <p><strong>Description:</strong> {listing.description}</p>
+                <p><strong>ZIP Code:</strong> {listing.zipcode}</p>
+                <p><strong>Asking Price:</strong> ${listing.price.toLocaleString()}</p>
+                <p><strong>Good Faith Deposit:</strong> ${listing.deposit.toLocaleString()}</p>
+                <button className="pure-button pure-button-primary mt-2" onClick={() => handleMakeOffer(listing.id)}>Make Offer</button>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<ViewListings />);
+  </script>
+</body>
+</html>
