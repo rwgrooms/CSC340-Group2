@@ -4,9 +4,6 @@
   <meta charset="UTF-8">
   <title>List Property</title>
   <link rel="stylesheet" href="https://unpkg.com/purecss@3.0.0/build/pure-min.css" />
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
   <style>
     body {
       font-family: sans-serif;
@@ -57,72 +54,68 @@
 <body>
   <div id="root"></div>
 
-  <script type="text/babel">
-    const { useState } = React;
-
+  <script type="text/javascript">
     function ListProperty() {
-      const [files, setFiles] = useState([]);
-
+      const filesContainer = document.querySelector(".preview");
       const handleDrop = (e) => {
         e.preventDefault();
         const newFiles = [...e.dataTransfer.files].filter(file => file.type.startsWith('image/'));
-        setFiles(prev => [...prev, ...newFiles]);
+        newFiles.forEach(file => {
+          const img = document.createElement("img");
+          img.src = URL.createObjectURL(file);
+          img.alt = `preview-${file.name}`;
+          filesContainer.appendChild(img);
+        });
       };
 
       const handleDragOver = (e) => e.preventDefault();
 
-      return (
-        <div>
-          <h1 className="text-2xl">List Property</h1>
+      document.querySelector(".drop-area").addEventListener("drop", handleDrop);
+      document.querySelector(".drop-area").addEventListener("dragover", handleDragOver);
 
-          <form className="pure-form pure-form-stacked" onSubmit={e => e.preventDefault()}>
-            <label>Address Line 1</label>
-            <input type="text" placeholder="Street address" required />
-
-            <label>Address Line 2</label>
-            <input type="text" placeholder="Apt, Suite, etc." />
-
-            <label>City</label>
-            <input type="text" required />
-
-            <label>State</label>
-            <input type="text" required />
-
-            <label>ZIP Code</label>
-            <input type="text" required />
-
-            <label>Description</label>
-            <textarea type="text" rows="5" required />
-
-            <label>Asking Price</label>
-            <input type="number" placeholder="$" required />
-
-            <label>Good Faith Deposit (required from buyer to avoid non-serious offers)</label>
-            <input type="number" placeholder="$" required />
-
-            <div
-              className="drop-area"
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
-            >
-              <p>Drag & drop images here</p>
-              <div className="preview">
-                {files.map((file, i) => (
-                  <img key={i} src={URL.createObjectURL(file)} alt={`preview-${i}`} />
-                ))}
-              </div>
-            </div>
-
-            <button type="submit" className="pure-button pure-button-primary" style={{ marginTop: '1em' }}>
-              Submit Listing
-            </button>
-          </form>
-        </div>
-      );
+      document.querySelector("form").addEventListener("submit", e => e.preventDefault());
     }
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<ListProperty />);
+    document.addEventListener("DOMContentLoaded", ListProperty);
   </script>
+
+  <div>
+    <h1 class="text-2xl">List Property</h1>
+    <form class="pure-form pure-form-stacked">
+      <label>Address Line 1</label>
+      <input type="text" placeholder="Street address" required />
+
+      <label>Address Line 2</label>
+      <input type="text" placeholder="Apt, Suite, etc." />
+
+      <label>City</label>
+      <input type="text" placeholder="City" required />
+
+      <label>State</label>
+      <input type="text" placeholder="State" required />
+
+      <label>ZIP Code</label>
+      <input type="text" placeholder="ZIP code" required />
+
+      <label>Description</label>
+      <textarea type="text" placeholder="Enter property description..." rows="5" required></textarea>
+
+      <label>Asking Price</label>
+      <input type="number" placeholder="Asking Price ($)" required />
+
+      <label>Good Faith Deposit (required from buyer to avoid non-serious offers)</label>
+      <input type="number" placeholder="Good Faith Deposit ($)" required />
+
+      <div class="drop-area">
+        <p>Drag & drop images here</p>
+        <div class="preview"></div>
+      </div>
+
+      <button type="submit" class="pure-button pure-button-primary" style="margin-top: 1em;">
+        Submit Listing
+      </button>
+    </form>
+  </div>
 </body>
 </html>
+
