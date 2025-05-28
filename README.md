@@ -10,7 +10,10 @@ List properties, accept showings and await offers, avoiding realtor fees.
 1. Customer (the buyer)
     1. Create/modify/remove customer profile
     2. Search Real Estate Listings
-    3. Schedule a showing
-    4. Write reviews after a showing
-    5. Make an offer/counter-offer 
+    3. Make an offer/counter-offer 
+2. Provider (the seller)
+    1. Create/modify/remove provider profile
+    2. List Property
+    3. View Offers
+    4. Accept/Reject/Counter offers
 
