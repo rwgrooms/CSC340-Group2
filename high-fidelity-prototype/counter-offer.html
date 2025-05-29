@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Make Offer</title>
+  <title>Make Counter offer</title>
   <link rel="stylesheet" href="https://unpkg.com/purecss@3.0.0/build/pure-min.css" />
   <style>
     body {
@@ -72,9 +72,9 @@
       <img src="images/front.png" alt="Property Image" />
       <label>Asking Price</label>
       <div class="readonly-field">$350,000</div>
-      <label>Good Faith Deposit</label>
-      <input type="text" placeholder="Good Faith Deposit" required />
       <label>Offering Price</label>
+      <div class="readonly-field">$300,000</div>
+      <label>Counter Offer</label>
       <input type="text" placeholder="Offering Price" required />
       <button type="submit" class="pure-button pure-button-primary">Submit Offer</button>
     </form>
@@ -83,7 +83,7 @@
   <script>
     document.getElementById('offerForm').addEventListener('submit', function(e) {
       e.preventDefault(); // Prevent form's default submission
-      window.location.href = 'view-listings.html'; // Redirect to view-offers page
+      window.location.href = 'view-offers.html'; // Redirect to view-offers page
     });
   </script>
 </body>
