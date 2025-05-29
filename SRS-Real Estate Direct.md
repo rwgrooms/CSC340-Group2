@@ -1,8 +1,8 @@
 # Software Requirements Specification
 ## For Real Estate Direct
-
+ 
 Version 0.1  
-Prepared by Robert Grooms  
+Prepared by Robert Grooms and Rishav Patel
 CSC340  
 May 25, 2025
 
@@ -135,12 +135,15 @@ NFR2: The buyer will be able to make an offer on a property in less than 1 minut
 NFR3: The system is going to be available only to authorized users, using their username and password.
 
 #### 3.2.3 Reliability
-
+- The system should have 99.9% uptime over any 30 day period.
+- Scheduled maintenace will not last more than 4 hours and will be announced in advance.
 
 #### 3.2.4 Availability
 NFR4: Real Estate Direct will be available 24/7. Scheduled Maintenance should be initialized during scheduled low activity hours such as federal holidays to minimize conflict with user’s using the app.
 
 #### 3.2.5 Compliance
+- The system will follow data protection laws set by the General Data Protection Regulation (GDPR) and California Consumer Privacy Act (CCPA)
+- Any credit-card handling must use a PCI-compliant gateway.
 
 #### 3.2.6 Cost
 NFR5: We expect to spend zero dollars on this project.
