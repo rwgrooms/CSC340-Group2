@@ -1,9 +1,12 @@
 package com.realestatedirect.api.crud;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "app_user")
+@Table(name = "appuser")
 public class User {
 
     @Id
@@ -19,7 +22,27 @@ public class User {
     private Integer creditScore;
     private Integer role;
 
-    // Getters and Setters
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Property> properties = new ArrayList<>();
+
+    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Offer> offer = new ArrayList<>();
+
+    public List<Offer> getOffer() {
+        return offer;
+    }
+
+    public void setOffer(List<Offer> offer) {
+        this.offer = offer;
+    }
+
+    public List<Property> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(List<Property> properties) {
+        this.properties = properties;
+    }
 
     public Long getUserId() {
         return userId;
@@ -93,3 +116,4 @@ public class User {
         this.role = role;
     }
 }
+
