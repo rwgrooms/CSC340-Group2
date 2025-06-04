@@ -11,7 +11,7 @@
 	<groupId>com.realestatedirect</groupId>
 	<artifactId>realestatedirect</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>DogsApiApplication</name>
+	<name>RealEstateApiApplication</name>
 	<description>API backend for Real Estate Direct</description>
 	<url/>
 	<licenses>
