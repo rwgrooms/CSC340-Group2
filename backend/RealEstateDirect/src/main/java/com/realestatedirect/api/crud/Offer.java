@@ -1,5 +1,7 @@
 package com.realestatedirect.api.crud;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -8,17 +10,21 @@ public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long offerId;
+    @Column(nullable = false)
     private Double offerPrice;
     private Double goodFaithDeposit;
+    @Column(nullable = false)
     private String status;
     private Double counterOfferPrice;
 
     @ManyToOne
     @JoinColumn(name = "propertyId", nullable = false)
+    @JsonBackReference("property-offers")
     private Property property;
 
     @ManyToOne
     @JoinColumn(name = "buyerId", nullable = false)
+    @JsonBackReference("user-property")
     private User buyer;
 
     public Long getOfferId() {

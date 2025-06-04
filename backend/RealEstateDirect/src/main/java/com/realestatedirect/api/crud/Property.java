@@ -5,29 +5,41 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Property {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long propertyId;
+    @Column(nullable = false)
     private String addressLine1;
     private String addressLine2;
+    @Column(nullable = false)
     private String city;
+    @Column(nullable = false)
     private String state;
+    @Column(nullable = false)
     private String zipCode;
+    @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
     private Double askingPrice;
     private Double goodFaithDeposit;
 
     @ManyToOne
     @JoinColumn(name = "sellerId", nullable = false)
+    @JsonBackReference("user-properties")
     private User seller;
 
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL)
+    @JsonManagedReference("property-images")
     private List<Image> images;
 
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("property-offers")
     private List<Offer> offer = new ArrayList<>();
 
     public List<Offer> getOffer() {

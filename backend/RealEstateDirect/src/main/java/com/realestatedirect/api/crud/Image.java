@@ -1,5 +1,7 @@
 package com.realestatedirect.api.crud;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -9,10 +11,12 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;
 
+    @Column(nullable = false)
     private String path;
 
     @ManyToOne
     @JoinColumn(name = "propertyId", nullable = false)
+    @JsonBackReference("property-images")
     private Property property;
 
     public Long getImageId() {
