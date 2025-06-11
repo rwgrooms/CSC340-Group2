@@ -1,13 +1,14 @@
 package com.realestatedirect.api.crud;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/api/users")
+@Controller
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -23,9 +24,16 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    @GetMapping("/register/registeruser")
+    public Object ShowRegistration() {
+        return "user-register";
+    }
+
+    @PostMapping("/register/createuser")
+    public String createUser(User user) {
+        userService.saveUser(user);
+        //return "dashboard";
+        return "test";
     }
 
     @PutMapping("/{id}")
