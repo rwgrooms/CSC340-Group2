@@ -43,14 +43,6 @@
         <label for="phoneNumber">Phone Number</label>
       <input id="phoneNumber" name="phoneNumber" type="tel" placeholder="123-456-7890" required>
 
-        <label for="address1">Address Line 1</label>
-      <input id="address1" name="address1" type="text" placeholder="Street address" required>
-
-        <label for="city">City</label>
-      <input id="city" name="city" type="text" placeholder="City" required>
-
-        <label for="credit">Credit Score</label>
-      <input id="credit" name="credit" type="number" min="300" max="850" placeholder="e.g., 700" required>
       </div>
 
       <!-- Right Column -->
@@ -61,14 +53,6 @@
         <label for="email">Email</label>
       <input id="email" name="email" type="email" placeholder="you@example.com" required>
 
-        <label for="address2">Address Line 2</label>
-      <input id="address2" name="address2" type="text" placeholder="Apt, suite, unit (optional)">
-
-        <label for="state">State</label>
-      <input id="state" name="state" type="text" placeholder="State" required>
-
-        <label for="zip">ZIP Code</label>
-      <input id="zip" name="zip" type="text" placeholder="ZIP Code" required>
       </div>
 
     </div>

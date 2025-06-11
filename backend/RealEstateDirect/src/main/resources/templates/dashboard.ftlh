@@ -32,10 +32,10 @@
 
 <div class="layout">
   <!-- Left: Sidebar -->
-  <iframe src="sidebar.html" class="sidebar-frame" name="menuFrame"></iframe>
+  <iframe src="/sidebar/${user.userId}" class="sidebar-frame" name="menuFrame"></iframe>
 
   <!-- Right: Main content area -->
-  <iframe src="welcome.html" class="content-frame" name="mainContent"></iframe>
+  <iframe src="/welcome" class="content-frame" name="mainContent"></iframe>
 </div>
 
 </body>

@@ -3,6 +3,7 @@ package com.realestatedirect.api.crud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,35 +15,35 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
-
-    @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
-    }
-
     @GetMapping("/register/registeruser")
-    public Object ShowRegistration() {
+    public Object ShowNewRegistration() {
         return "user-register";
     }
 
     @PostMapping("/register/createuser")
-    public String createUser(User user) {
-        userService.saveUser(user);
-        //return "dashboard";
-        return "test";
+    public String createUser(User user, Model model) {
+        User currentuser = userService.saveUser(user);
+        model.addAttribute("user", currentuser);
+        return "dashboard";
     }
 
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+    @GetMapping("/register/edituser/{id}")
+    public Object ShowEditRegistration(@PathVariable Long id, Model model) {
+        User currentuser = userService.getUserById(id).orElse(null);
+        model.addAttribute("user", currentuser);
+        return "edit-profile";
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    @PostMapping("/register/updateuser")
+    public Object updateUser(User user, Model model) {
+        User currentuser = userService.updateUser(user.getUserId(), user);
+        model.addAttribute("user", currentuser);
+        return "welcome";
+    }
+
+    @GetMapping("/register/deleteuser/{id}")
+    public Object deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        return "welcome";
     }
 }
