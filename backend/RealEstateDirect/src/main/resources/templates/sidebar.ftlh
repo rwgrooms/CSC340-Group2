@@ -43,20 +43,23 @@
         <li class="pure-menu-item"><a href="view-offers.html" target="mainContent" class="pure-menu-link">View Offers</a></li>
     </ul>
     </div>
-
-    <div class="menu-section">
-      <h3>Seller</h3>
-      <ul class="pure-menu-list">
-        <li class="pure-menu-item"><a href="/api/properties/create/${user.userId}" target="mainContent" class="pure-menu-link">List Property</a></li>
-      </ul>
-    </div>
-
-    <div class="menu-section">
-      <h3>Buyer</h3>
-      <ul class="pure-menu-list">
-        <li class="pure-menu-item"><a href="/api/properties" target="mainContent" class="pure-menu-link">View Listings</a></li>
-      </ul>
-    </div>
+    <#if user?? && user.role?? && user.role == 2> <!-- Assuming role 2 is for seller -->
+        <div class="menu-section">
+          <h3>Seller</h3>
+          <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="/api/properties/create/${user.userId}" target="mainContent" class="pure-menu-link">List Property</a></li>
+            <li class="pure-menu-item"><a href="/api/properties/listings/${user.userId}" target="mainContent" class="pure-menu-link">View Listings</a></li>
+          </ul>
+        </div>
+    </#if>
+    <#if user?? && user.role?? && user.role == 1> <!-- Assuming role 1 is for buyer -->
+      <div class="menu-section">
+        <h3>Buyer</h3>
+        <ul class="pure-menu-list">
+          <li class="pure-menu-item"><a href="/api/properties/listings/${user.userId}" target="mainContent" class="pure-menu-link">View Listings</a></li>
+        </ul>
+      </div>
+    </#if>
   </nav>
 
 </body>

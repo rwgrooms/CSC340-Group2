@@ -30,10 +30,11 @@ public class PropertyController {
 
     private final String UPLOAD_DIR = "src/main/resources/static/uploads/";
 
-    @GetMapping
-    public String getAllProperties(Model model) {
+    @GetMapping("/listings/{id}")
+    public String getAllProperties(@PathVariable Long id, Model model) {
         List<Property> properties = propertyService.getAllProperties();
         model.addAttribute("properties", properties);
+        model.addAttribute("currentUser", userService.getUserById(id).orElse(null));
         return "view-listings";
     }
 
@@ -48,6 +49,7 @@ public class PropertyController {
     public String showCreatePropertyForm(@PathVariable Long id, Model model) {
         model.addAttribute("sellerId", id);
         model.addAttribute("property", new Property());
+        //return "test";
         return "list-property";
     }
 

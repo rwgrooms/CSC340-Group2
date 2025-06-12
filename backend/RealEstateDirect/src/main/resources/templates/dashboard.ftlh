@@ -29,7 +29,6 @@
   </style>
 </head>
 <body>
-
 <div class="layout">
   <!-- Left: Sidebar -->
   <iframe src="/sidebar/${user.userId}" class="sidebar-frame" name="menuFrame"></iframe>

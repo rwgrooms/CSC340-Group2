@@ -18,11 +18,16 @@
     }
 
     .card {
-      border: 1px solid #ddd;
-      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 400px; /* or whatever fits your layout */
       padding: 1em;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #fff;
     }
+
 
     .card img {
       width: 100%;
@@ -75,7 +80,6 @@
   <div>
     <div class="header">
       <h1 class="text-2xl font-bold mb-4">Property Listings</h1>
-      <a href="/api/properties/create" class="pure-button pure-button-primary">List a Property</a>
     </div>
     
     <input type="text" id="zipFilter" placeholder="Filter by ZIP code" />
@@ -96,10 +100,10 @@
             <p><strong>Asking Price:</strong> $${property.askingPrice?string(",##0.00")}</p>
             <p><strong>Good Faith Deposit:</strong> $${property.goodFaithDeposit?string(",##0.00")}</p>
             
-            <div style="margin-top: 1em; display: flex; gap: 0.5em;">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
               <a href="/api/properties/${property.propertyId}" class="pure-button">View Details</a>
-              <#if currentUser?? && currentUser.role == 1> <!-- Assuming role 1 is for buyers -->
-                <a href="/api/offers/create/${property.propertyId}" class="pure-button pure-button-primary">Make Offer</a>
+              <#if currentUser?? && currentUser.role?? && currentUser.role == 1> <!-- Assuming role 1 is for buyers -->
+                <a href="/api/offers/create/${property.propertyId}?userId=${currentUser.userId}" class="pure-button pure-button-primary">Make Offer</a>
               </#if>
             </div>
           </div>
