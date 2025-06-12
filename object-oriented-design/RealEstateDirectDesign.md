@@ -29,7 +29,7 @@ Real Estate Direct is a simple, comprehensive, easy to use web app with the goal
 
 ## 2. Use Cases
 ### 2.1 Use Case Model
-![Use Case Model](https://github.com/rwgrooms/CSC340-Group2/blob/main/object-oriented-design/CS340-UML.jpg)
+![Use Case Model](https://github.com/rwgrooms/CSC340-Group2/blob/main/object-oriented-design/CSC340-Use-Case-Diagram.jpg)
 
 ### 2.2 Use Case Descriptions
 
