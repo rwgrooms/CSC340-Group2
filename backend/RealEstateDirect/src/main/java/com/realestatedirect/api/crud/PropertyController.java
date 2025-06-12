@@ -21,6 +21,9 @@ public class PropertyController {
 
     @Autowired
     private PropertyService propertyService;
+
+    @Autowired
+    private UserService userService;
         
     @Autowired
     private ImageService imageService;
@@ -41,29 +44,33 @@ public class PropertyController {
         return "property-details";
     }
 
-    @GetMapping("/create")
-    public String showCreatePropertyForm(Model model) {
+    @GetMapping("/create/{id}")
+    public String showCreatePropertyForm(@PathVariable Long id, Model model) {
+        model.addAttribute("sellerId", id);
         model.addAttribute("property", new Property());
         return "list-property";
     }
 
 
-    @PostMapping("/create")
+    @PostMapping("/create/{id}")
     public String createProperty(
             Property property,
-            @RequestParam("imageFiles") MultipartFile[] imageFiles, 
+            @RequestParam("imageFiles") MultipartFile[] imageFiles,
+            @PathVariable Long id,
             Model model) {
-        
+        User seller = userService.getUserById(id).orElse(null);
+        property.setSeller(seller);
         Property savedProperty = propertyService.saveProperty(property);
         
-        if (imageFiles != null && imageFiles.length > 0) {
-            List<Image> images = saveUploadedImages(imageFiles, savedProperty);
-            savedProperty.setImages(images);
-            propertyService.saveProperty(savedProperty);
-        }
+        // if (imageFiles != null && imageFiles.length > 0) {
+        //     List<Image> images = saveUploadedImages(imageFiles, savedProperty);
+        //     savedProperty.setImages(images);
+        //     propertyService.saveProperty(savedProperty);
+        // }
         
         model.addAttribute("property", savedProperty);
-        return "redirect:/api/properties/" + savedProperty.getPropertyId();
+        model.addAttribute("user", seller);
+        return "welcome";
     }
 
     @GetMapping("/edit/{id}")

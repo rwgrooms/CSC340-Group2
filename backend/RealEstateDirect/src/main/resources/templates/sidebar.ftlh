@@ -47,7 +47,7 @@
     <div class="menu-section">
       <h3>Seller</h3>
       <ul class="pure-menu-list">
-        <li class="pure-menu-item"><a href="/api/properties/create" target="mainContent" class="pure-menu-link">List Property</a></li>
+        <li class="pure-menu-item"><a href="/api/properties/create/${user.userId}" target="mainContent" class="pure-menu-link">List Property</a></li>
       </ul>
     </div>
 
