@@ -31,4 +31,8 @@ public class UserService {
         updatedUser.setUserId(id);
         return userRepository.save(updatedUser);
     }
+    
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }

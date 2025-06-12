@@ -19,8 +19,15 @@ public class UserController {
 
     @PostMapping("/register/createuser")
     public String createUser(User user, Model model) {
-        User currentuser = userService.saveUser(user);
-        model.addAttribute("user", currentuser);
+        User existingUser = userService.getUserByEmail(user.getEmail()).orElse(user);
+        if (existingUser != null){
+            model.addAttribute("title", "Email Already Exists");    
+            model.addAttribute("user", existingUser);
+        } else {
+            User currentuser = userService.saveUser(user);
+            model.addAttribute("user", currentuser);
+        }
+        //return "login"; change to login once security is implemented
         return "dashboard";
     }
 
