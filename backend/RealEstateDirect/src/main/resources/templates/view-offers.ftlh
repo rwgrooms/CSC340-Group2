@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>View Offers</title>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@3.0.0/build/pure-min.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5em;
+    }
+
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1em;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 0.75em;
+    }
+
+    strong {
+      display: inline-block;
+      min-width: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1 class="text-2xl font-bold mb-4">View Offers</h1>
+    <div id="offers" class="grid"></div>
+  </div>
+
+  <script>
+    const offers = [
+      {
+        id: 1,
+        image: 'images/front.png',
+        deposit: 5000,
+        askingPrice: 350000,
+        offerPrice: 340000,
+      },
+    ];
+
+    function renderOffers() {
+      const offersContainer = document.getElementById('offers');
+      offers.forEach((offer) => {
+        const offerElement = document.createElement('div');
+        offerElement.className = 'card';
+
+        offerElement.innerHTML = `
+          <img src="${offer.image}" alt="Offer" />
+          <p><strong>Good Faith Deposit:</strong> ${offer.deposit.toLocaleString()}</p>
+          <p><strong>Asking Price:</strong> ${offer.askingPrice.toLocaleString()}</p>
+          <p><strong>Offer Price:</strong> ${offer.offerPrice.toLocaleString()}</p>
+          <button class="pure-button pure-button-primary" onclick="handleCounterOffer(${offer.id})">Counter Offer</button>
+        `;
+
+        offersContainer.appendChild(offerElement);
+      });
+    }
+
+    function handleCounterOffer(id) {
+      console.log(`Countering offer on ID: ${id}`);
+      window.location.href = 'counter-offer.html';
+    }
+
+    // Initial rendering of offers
+    renderOffers();
+  </script>
+</body>
+</html>
+
