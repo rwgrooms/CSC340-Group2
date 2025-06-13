@@ -40,7 +40,7 @@
       <h3>Main Menu</h3>
       <ul class="pure-menu-list">
         <li class="pure-menu-item"><a href="/users/register/edituser/${user.userId}" target="mainContent" class="pure-menu-link">Edit Profile</a></li>
-        <li class="pure-menu-item"><a href="view-offers.html" target="mainContent" class="pure-menu-link">View Offers</a></li>
+        <li class="pure-menu-item"><a href="/api/offers/${user.userId}" target="mainContent" class="pure-menu-link">View Offers</a></li>
     </ul>
     </div>
     <#if user?? && user.role?? && user.role == 2> <!-- Assuming role 2 is for seller -->

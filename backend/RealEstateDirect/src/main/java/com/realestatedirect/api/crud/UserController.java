@@ -19,7 +19,7 @@ public class UserController {
 
     @PostMapping("/register/createuser")
     public String createUser(User user, Model model) {
-        User existingUser = userService.getUserByEmail(user.getEmail()).orElse(user);
+        User existingUser = userService.getUserByEmail(user.getEmail()).orElse(null);
         if (existingUser != null){
             model.addAttribute("title", "Email Already Exists");    
             model.addAttribute("user", existingUser);

@@ -38,7 +38,7 @@ public class Property {
     @JsonManagedReference("property-images")
     private List<Image> images;
 
-    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL)
     @JsonManagedReference("property-offers")
     private List<Offer> offer = new ArrayList<>();
 
