@@ -27,7 +27,8 @@
       margin-bottom: 0.5em;
     }
 
-    .pure-form input[type="text"] {
+    .pure-form input[type="text"],
+    .pure-form input[type="number"] {
       display: block;
       width: 100%;
       padding: 0.5em;
@@ -68,20 +69,40 @@
 </head>
 <body>
   <div id="root">
-    <form class="pure-form" id="offerForm" method="post" action="/api/offers/create/${property.propertyId}">
+    <form class="pure-form" id="offerForm" method="post" action="/api/offers/create">
       <img src="images/front.png" alt="Property Image" />
       <label>Asking Price</label>
       <div class="readonly-field">${property.askingPrice}</div>
       <input type="number" name="userId" value="${currentUser.userId}" hidden />
       <input type="number" name="propertyId" value="${property.propertyId}" hidden />
-      <input type="number" name="AskingPrice" value="${property.askingPrice}" hidden />
+      <input type="text" name="AskingPrice" id="askingPrice" value="${property.askingPrice}" hidden />
       <label>Good Faith Deposit</label>
-      <input type="text" name="goodFaithDeposit" value="${property.goodFaithDeposit}" placeholder="Good Faith Deposit" />
+      <input type="text" name="goodFaithDeposit" id="goodFaithDeposit" value="${property.goodFaithDeposit}" placeholder="Good Faith Deposit" />
       <label>Offering Price</label>
-      <input type="number" name="offerPrice" placeholder="Offering Price" required />
+      <input type="text" name="offerPrice" id="offerPrice" placeholder="Offering Price" required />
       <button type="submit" class="pure-button pure-button-primary">Submit Offer</button>
     </form>
   </div>
+  
+  <script>
+  
+    function sanitizeNumericField(field) {
+      if (!field) return;
+      let raw = field.value;
+      raw = raw.replace(/[^0-9.]/g, ''); // keep only digits and dot
+      const parts = raw.split('.');
+      if (parts.length > 2) {
+        // if multiple dots, keep only first
+        raw = parts[0] + '.' + parts.slice(1).join('');
+      }
+      field.value = raw;
+    }
 
+    document.getElementById("offerForm").addEventListener("submit", function () {
+      sanitizeNumericField(document.getElementById("askingPrice"));
+      sanitizeNumericField(document.getElementById("goodFaithDeposit"));
+      sanitizeNumericField(document.getElementById("offerPrice"));
+    });
+  </script>
 </body>
 </html>

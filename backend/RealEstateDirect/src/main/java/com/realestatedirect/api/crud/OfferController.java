@@ -21,15 +21,15 @@ public class OfferController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public List<Offer> getAllOffers() {
-        return offerService.getAllOffers();
-    }
+    // @GetMapping
+    // public List<Offer> getAllOffers() {
+    //     return offerService.getAllOffers();
+    // }
 
-    @GetMapping("/{id}")
-    public Optional<Offer> getOfferById(@PathVariable Long id) {
-        return offerService.getOfferById(id);
-    }
+    // @GetMapping("/{id}")
+    // public Optional<Offer> getOfferById(@PathVariable Long id) {
+    //     return offerService.getOfferById(id);
+    // }
 
     @GetMapping("/create/{id}")
     public Object ShowCreateOfferPage(@PathVariable Long id, @RequestParam Long userId, Model model) {
@@ -40,10 +40,10 @@ public class OfferController {
         return "make-offer";
     }
 
-    @PostMapping("/create/{id}")
-    public Object createOffer(@PathVariable Long id, @RequestParam Long userId, Offer offer) {
+    @PostMapping("/create")
+    public Object createOffer(@RequestParam Long propertyId, @RequestParam Long userId, Offer offer) {
         User user = userService.getUserById(userId).orElse(null);
-        Property property = propertyService.getPropertyById(id).orElse(null);
+        Property property = propertyService.getPropertyById(propertyId).orElse(null);
         offer.setProperty(property);
         offer.setStatus("Submitted");
         offer.setBuyer(user);
@@ -51,13 +51,36 @@ public class OfferController {
         return "welcome";
     }
 
-    @PutMapping("/{id}")
-    public Offer updateOffer(@PathVariable Long id, @RequestBody Offer offer) {
-        return offerService.updateOffer(id, offer);
+    // @PutMapping("/{id}")
+    // public Offer updateOffer(@PathVariable Long id, @RequestBody Offer offer) {
+    //     return offerService.updateOffer(id, offer);
+    // }
+
+    // @DeleteMapping("/{id}")
+    // public void deleteOffer(@PathVariable Long id) {
+    //     offerService.deleteOffer(id);
+    // }
+
+    @GetMapping("/myoffers/{id}")
+    public String getMyOffers(@PathVariable Long id, Model model) {
+        User currentUser = userService.getUserById(id).orElse(null);
+        List<Offer> offers = offerService.getOffersForUser(currentUser);
+        model.addAttribute("offers", offers);
+        model.addAttribute("currentUser", currentUser);
+        return "view-offers";
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteOffer(@PathVariable Long id) {
-        offerService.deleteOffer(id);
+    @PostMapping("/update")
+    public Object updateOffer(@RequestParam Long propertyId, @RequestParam Long userId, Offer offer) {
+        Offer updatedOffer = offerService.getOfferById(offer.getOfferId()).orElse(null);
+        User user = userService.getUserById(userId).orElse(null);
+        Property property = propertyService.getPropertyById(propertyId).orElse(null);
+        updatedOffer.setProperty(property);
+        updatedOffer.setGoodFaithDeposit(offer.getGoodFaithDeposit());
+        updatedOffer.setOfferPrice(offer.getOfferPrice());
+        updatedOffer.setStatus("Updated");
+        updatedOffer.setBuyer(user);
+        offerService.updateOffer(updatedOffer.getOfferId(), updatedOffer);
+        return "welcome";
     }
 }
