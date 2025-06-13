@@ -32,11 +32,11 @@ public class User {
     private Integer role;
 
     @JsonManagedReference("user-properties")
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private List<Property> properties = new ArrayList<>();
 
     @JsonManagedReference("user-property")
-    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL)
     private List<Offer> offer = new ArrayList<>();
 
     public List<Offer> getOffer() {
