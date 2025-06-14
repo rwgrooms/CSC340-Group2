@@ -32,9 +32,9 @@
 
   <h2>Register</h2>
 
-<form class="pure-form pure-form-stacked" method="post" action="createuser">
+<form class="pure-form pure-form-stacked" method="post" action="/users/register/createuser">
     <div class="pure-g">
-
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
       <!-- Left Column -->
       <div class="pure-u-1-2" style="padding-right: 1em;">
         <label for="firstName">First Name</label>
@@ -72,7 +72,7 @@
 
     <div style="margin-top: 1.5em;">
     <button type="submit" class="pure-button pure-button-primary">Register</button>
-    <a href="login.html" class="pure-button">Back to Login</a>
+    <a href="/login.html" class="pure-button">Back to Login</a>
     </div>
   </form>
 

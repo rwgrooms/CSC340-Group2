@@ -80,6 +80,7 @@
     
     <form class="pure-form pure-form-stacked" action="/api/properties/update" method="post" enctype="multipart/form-data">
       <!-- Hidden fields for IDs -->
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
       <input type="hidden" id="propertyId" name="propertyId" value="${property.propertyId}">
       <input type="hidden" id="seller.userId" name="seller.userId" value="${property.seller.userId}">
       

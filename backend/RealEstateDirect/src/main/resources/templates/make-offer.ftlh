@@ -73,6 +73,7 @@
       <img src="images/front.png" alt="Property Image" />
       <label>Asking Price</label>
       <div class="readonly-field">${property.askingPrice}</div>
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
       <input type="number" name="userId" value="${currentUser.userId}" hidden />
       <input type="number" name="propertyId" value="${property.propertyId}" hidden />
       <input type="text" name="AskingPrice" id="askingPrice" value="${property.askingPrice}" hidden />
