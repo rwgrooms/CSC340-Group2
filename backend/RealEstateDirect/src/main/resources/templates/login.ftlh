@@ -73,7 +73,9 @@
     <#if error??>
         <p style="color:red;">Invalid username or password.</p>
     </#if>
-
+    <#if message??>
+      <div class="success-message">${message}</div>
+    </#if>
     <form class="pure-form" action="/login" method="post">
         <h2>Real Estate Direct</h2>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

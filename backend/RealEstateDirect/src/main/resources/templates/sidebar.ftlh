@@ -3,13 +3,7 @@
 <head>
   <link rel="stylesheet" href="https://unpkg.com/purecss@3.0.0/build/pure-min.css">
   <style>
-    body {
-      margin: 0;
-      padding: 1em;
-      font-family: sans-serif;
-      background-color: #f2f2f2;
-    }
-
+ 
     .menu-section {
       margin-bottom: 2em;
     }
@@ -31,11 +25,30 @@
       background-color: #0078e7;
       color: white;
     }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; /* 🚫 disables scrollbars */
+      font-family: sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    .sidebar-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 1em;
+      box-sizing: border-box; /* prevents padding from adding to height */
+    }
+
   </style>
 </head>
 <body>
 
-  <nav>
+   <div class="sidebar-wrapper" style="display: flex; flex-direction: column; height: 100%;">
+    
+    <nav style="flex: 1;">
     <div class="menu-section">
       <h3>Main Menu</h3>
       <ul class="pure-menu-list">
@@ -61,6 +74,23 @@
       </div>
     </#if>
   </nav>
+
+<div class="logout-section" style="padding-top: 1em;">
+      <ul class="pure-menu-list">
+        <li class="pure-menu-item">
+          <form id="logoutForm" method="post" action="/logout" target="_top" style="margin: 0;">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <button type="submit" class="pure-menu-link" style="background: none; border: none; padding: 0; text-align: left; width: 100%; cursor: pointer;">
+             <strong>Logout
+            </button>
+          </form>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+
 
 </body>
 </html>

@@ -41,7 +41,7 @@ public class UserController {
         } else {
             User currentuser = userService.saveUser(user);
             // Automatically log the new user in:
-                UserDetails userDetails = customUserDetailsService.loadUserByUsername(currentuser.getEmail());
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(currentuser.getUserName());
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 userDetails, userDetails.getPassword(), userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authToken);
