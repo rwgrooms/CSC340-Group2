@@ -49,6 +49,7 @@
   <form class="pure-form pure-form-stacked" id="editForm" method="post" action="/users/register/updateuser">
     <div class="pure-g">
       <div class="pure-u-1-2" style="padding-right: 1em;">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input id="userId" name="userId" value="${user.userId}" hidden>
         <label for="firstName">First Name</label>
         <input id="firstName" name="firstName" type="text" value="${user.firstName}" placeholder="First Name" required>

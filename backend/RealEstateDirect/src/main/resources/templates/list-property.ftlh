@@ -83,6 +83,7 @@
   <div>
     <h1 class="text-2xl">List Property</h1>
     <form class="pure-form pure-form-stacked" action="/api/properties/create/${sellerId}" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
       <label for="addressLine1">Address Line 1</label>
       <input type="text" id="addressLine1" name="addressLine1" placeholder="Street address" required />
 

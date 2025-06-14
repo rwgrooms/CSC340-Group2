@@ -71,6 +71,7 @@
               <p><strong>ZIP Code:</strong> ${offer.property.zipCode!''}</p>
               <p><strong>Asking Price:</strong> $${offer.property.askingPrice?string(",##0.00")}</p>
               <form class="pure-form" id="offerForm" method="post" action="/api/offers/update">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <input type="number" name="userId" value="${currentUser.userId}" hidden />
                 <input type="number" name="propertyId" value="${offer.property.propertyId}" hidden />
                 <input type="number" name="offerId" value="${offer.offerId}" hidden />
