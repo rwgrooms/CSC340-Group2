@@ -28,11 +28,13 @@
       padding: 1em;
       cursor: pointer;
       background-color: #fafafa;
+      transition: all 0.3s ease;
     }
 
-    .drop-area:hover {
+    .drop-area:hover,
+    .drop-area.drag-over {
       border-color: #0078e7;
-      background-color: #f0f8ff;
+      background-color: #e1f5fe;
     }
 
     .preview {
@@ -42,29 +44,50 @@
       margin-top: 1em;
     }
 
-    .preview img {
+    .preview-item {
+      position: relative;
       width: 100px;
       height: 100px;
-      object-fit: cover;
       border-radius: 6px;
-      border: 1px solid #ccc;
+      overflow: hidden;
     }
-    
+
+    .preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .remove-image {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 20px;
+      height: 20px;
+      background-color: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+      color: #ff3b30;
+    }
+
     .existing-images {
       margin-bottom: 1em;
     }
-    
+
     .existing-images h3 {
       margin-bottom: 0.5em;
     }
-    
+
     .existing-image {
-      position: relative;
       display: inline-block;
       margin-right: 1em;
       margin-bottom: 1em;
     }
-    
+
     .existing-image img {
       width: 120px;
       height: 120px;
@@ -77,38 +100,35 @@
 <body>
   <div>
     <h1>Update Property Listing</h1>
-    
     <form class="pure-form pure-form-stacked" action="/api/properties/update" method="post" enctype="multipart/form-data">
-      <!-- Hidden fields for IDs -->
       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
       <input type="hidden" id="propertyId" name="propertyId" value="${property.propertyId}">
       <input type="hidden" id="seller.userId" name="seller.userId" value="${property.seller.userId}">
-      
+
       <label for="addressLine1">Address Line 1</label>
-      <input type="text" id="addressLine1" name="addressLine1" value="${property.addressLine1!''}" placeholder="Street address" required />
+      <input type="text" id="addressLine1" name="addressLine1" value="${property.addressLine1!''}" required />
 
       <label for="addressLine2">Address Line 2</label>
-      <input type="text" id="addressLine2" name="addressLine2" value="${property.addressLine2!''}" placeholder="Apt, Suite, etc." />
+      <input type="text" id="addressLine2" name="addressLine2" value="${property.addressLine2!''}" />
 
       <label for="city">City</label>
-      <input type="text" id="city" name="city" value="${property.city!''}" placeholder="City" required />
+      <input type="text" id="city" name="city" value="${property.city!''}" required />
 
       <label for="state">State</label>
-      <input type="text" id="state" name="state" value="${property.state!''}" placeholder="State" required />
+      <input type="text" id="state" name="state" value="${property.state!''}" required />
 
       <label for="zipCode">ZIP Code</label>
-      <input type="text" id="zipCode" name="zipCode" value="${property.zipCode!''}" placeholder="ZIP code" required />
+      <input type="text" id="zipCode" name="zipCode" value="${property.zipCode!''}" required />
 
       <label for="description">Description</label>
-      <textarea id="description" name="description" placeholder="Enter property description..." rows="5" required>${property.description!''}</textarea>
+      <textarea id="description" name="description" rows="5" required>${property.description!''}</textarea>
 
       <label for="askingPrice">Asking Price</label>
-      <input type="number" id="askingPrice" name="askingPrice" value="${property.askingPrice?string['0.##']!''}" placeholder="Asking Price ($)" required />
+      <input type="number" id="askingPrice" name="askingPrice" value="${property.askingPrice?string['0.##']!''}" required />
 
       <label for="goodFaithDeposit">Good Faith Deposit</label>
-      <input type="number" id="goodFaithDeposit" name="goodFaithDeposit" value="${property.goodFaithDeposit?string['0.##']!''}" placeholder="Good Faith Deposit ($)" required />
+      <input type="number" id="goodFaithDeposit" name="goodFaithDeposit" value="${property.goodFaithDeposit?string['0.##']!''}" required />
 
-      <!-- Display existing images -->
       <div class="existing-images">
         <h3>Current Images</h3>
         <#if property.images?? && property.images?size gt 0>
@@ -122,75 +142,109 @@
         </#if>
       </div>
 
-      <h3>Add New Images</h3>
-      <div class="drop-area">
+      <label>Add New Images</label>
+      <div class="drop-area" id="dropArea">
         <p>Drag & drop images here or click to select</p>
-        <input type="file" id="imageFiles" name="imageFiles" multiple accept="image/*" style="display: none;"/>
-        <div class="preview"></div>
+        <input type="file" id="imageFiles" name="imageFiles" multiple accept="image/*" style="display: none;" />
+        <div class="preview" id="imagePreview"></div>
       </div>
 
       <div style="margin-top: 2em; display: flex; gap: 1em;">
-        <button type="submit" class="pure-button pure-button-primary">
-          Update Property
-        </button>
+        <button type="submit" class="pure-button pure-button-primary">Update Property</button>
         <a href="/api/properties/${property.propertyId}" class="pure-button">Cancel</a>
       </div>
     </form>
   </div>
-  
-  <script type="text/javascript">
-    function setupImageHandling() {
-      const fileInput = document.getElementById("imageFiles");
-      const dropArea = document.querySelector(".drop-area");
-      const filesContainer = document.querySelector(".preview");
-      
-      // Trigger file input when clicking on drop area
-      dropArea.addEventListener("click", function() {
-        fileInput.click();
-      });
-      
-      const handleFiles = (files) => {
-        Array.from(files).forEach(file => {
-          if (!file.type.startsWith('image/')) return;
-          
-          const img = document.createElement("img");
-          img.src = URL.createObjectURL(file);
-          img.alt = `preview-${file.name}`;
-          filesContainer.appendChild(img);
-        });
-      };
-      
-      const handleDrop = (e) => {
-        e.preventDefault();
-        const newFiles = [...e.dataTransfer.files].filter(file => file.type.startsWith('image/'));
-        
-        // Add files to the file input
-        const dt = new DataTransfer();
-        const existingFiles = fileInput.files;
-        
-        if (existingFiles) {
-          for (let i = 0; i < existingFiles.length; i++) {
-            dt.items.add(existingFiles[i]);
-          }
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const dropArea = document.getElementById('dropArea');
+      const fileInput = document.getElementById('imageFiles');
+      const preview = document.getElementById('imagePreview');
+
+      dropArea.addEventListener('click', function (e) {
+        if (!e.target.classList.contains('remove-image')) {
+          fileInput.click();
         }
-        
-        newFiles.forEach(file => dt.items.add(file));
-        fileInput.files = dt.files;
-        
-        handleFiles(newFiles);
-      };
+      });
 
-      const handleDragOver = (e) => e.preventDefault();
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+      });
 
-      dropArea.addEventListener("drop", handleDrop);
-      dropArea.addEventListener("dragover", handleDragOver);
-      
-      fileInput.addEventListener("change", function() {
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, () => dropArea.classList.add('drag-over'), false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, () => dropArea.classList.remove('drag-over'), false);
+      });
+
+      dropArea.addEventListener('drop', handleDrop, false);
+      fileInput.addEventListener('change', function () {
         handleFiles(this.files);
       });
-    }
 
-    document.addEventListener("DOMContentLoaded", setupImageHandling);
+      function handleDrop(e) {
+        const droppedFiles = [...e.dataTransfer.files].filter(file =>
+          file.type.startsWith('image/')
+        );
+
+        if (droppedFiles.length === 0) return;
+
+        const dataTransfer = new DataTransfer();
+        for (const file of fileInput.files) {
+          dataTransfer.items.add(file);
+        }
+        for (const file of droppedFiles) {
+          dataTransfer.items.add(file);
+        }
+
+        fileInput.files = dataTransfer.files;
+        handleFiles(droppedFiles);
+      }
+
+      function handleFiles(files) {
+        files = [...files].filter(file => file.type.startsWith('image/'));
+        files.forEach(previewFile);
+      }
+
+      function previewFile(file) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = function () {
+          const previewItem = document.createElement('div');
+          previewItem.className = 'preview-item';
+
+          const img = document.createElement('img');
+          img.src = reader.result;
+          img.alt = file.name;
+          previewItem.appendChild(img);
+
+          const removeBtn = document.createElement('span');
+          removeBtn.className = 'remove-image';
+          removeBtn.innerHTML = '×';
+          removeBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            previewItem.remove();
+            updateFileInput();
+          });
+
+          previewItem.appendChild(removeBtn);
+          preview.appendChild(previewItem);
+        };
+      }
+
+      function updateFileInput() {
+        console.log("Note: This preview removal does not affect the actual file input submission.");
+      }
+    });
   </script>
 </body>
 </html>

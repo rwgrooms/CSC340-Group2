@@ -6,11 +6,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.realestatedirect.api.security.CustomUserDetailsService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -94,28 +100,63 @@ public class PropertyController {
     public String updateProperty(
             Property property, 
             @RequestParam(value = "imageFiles", required = false) MultipartFile[] imageFiles,
-            Model model) {
+            Model model,
+            Principal principal) {
         
+        User seller = userService.getUserByEmail(principal.getName()).orElse(null);
+        //User seller = userService.getUserById(principal. id).orElse(null);
+        //property.setSeller(seller);
+
         Property existingProperty = propertyService.getPropertyById(property.getPropertyId()).orElse(null);
         if (existingProperty != null) {
             property.setImages(existingProperty.getImages());
         }
+
+        Property savedProperty = propertyService.saveProperty(property);
         
-        Property updatedProperty = propertyService.updateProperty(property.getPropertyId(), property);
-        
-        if (imageFiles != null && imageFiles.length > 0) {
-            List<Image> newImages = saveUploadedImages(imageFiles, updatedProperty);
-            
-            if (updatedProperty.getImages() == null) {
-                updatedProperty.setImages(new ArrayList<>());
-            }
-            updatedProperty.getImages().addAll(newImages);
-            
-            propertyService.saveProperty(updatedProperty);
+        if (savedProperty != null) {
+                    // Remove and delete images
+                    if (savedProperty.getImages() != null) {
+                        Iterator<Image> iterator = savedProperty.getImages().iterator();
+                        while (iterator.hasNext()) {
+                            Image image = iterator.next();
+                            iterator.remove(); // remove from Property's list
+                            imageService.deleteImage(image.getImageId()); // then delete from DB
+                        }
+                        propertyService.saveProperty(savedProperty); // persist image removal
+                    }
+        }
+
+        if (imageFiles != null && imageFiles.length > 0 && !imageFiles[0].isEmpty()) {
+            List<Image> images = saveUploadedImages(imageFiles, savedProperty);
+            savedProperty.setImages(images);
+            propertyService.saveProperty(savedProperty);
         }
         
-        model.addAttribute("property", updatedProperty);
-        return "redirect:/api/properties/" + updatedProperty.getPropertyId();
+        model.addAttribute("property", savedProperty);
+        model.addAttribute("user", seller);
+        return "welcome";
+
+        // Property existingProperty = propertyService.getPropertyById(property.getPropertyId()).orElse(null);
+        // if (existingProperty != null) {
+        //     property.setImages(existingProperty.getImages());
+        // }
+        
+        // Property updatedProperty = propertyService.updateProperty(property.getPropertyId(), property);
+        
+        // if (imageFiles != null && imageFiles.length > 0) {
+        //     List<Image> newImages = saveUploadedImages(imageFiles, updatedProperty);
+            
+        //     if (updatedProperty.getImages() == null) {
+        //         updatedProperty.setImages(new ArrayList<>());
+        //     }
+        //     updatedProperty.getImages().addAll(newImages);
+            
+        //     propertyService.saveProperty(updatedProperty);
+        // }
+        
+        // model.addAttribute("property", updatedProperty);
+        // return "redirect:/api/properties/" + updatedProperty.getPropertyId();
     }
 
     @GetMapping("/delete/{id}")
