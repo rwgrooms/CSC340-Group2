@@ -12,12 +12,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/api/properties")
 public class PropertyController {
+
+    private final OfferService offerService;
 
     @Autowired
     private PropertyService propertyService;
@@ -28,7 +31,12 @@ public class PropertyController {
     @Autowired
     private ImageService imageService;
 
-    private final String UPLOAD_DIR = "src/main/resources/static/uploads/";
+    //private final String UPLOAD_DIR = "/src/main/resources/imageuploads/";
+    private final String UPLOAD_DIR = System.getProperty("user.home") + "/realestate-uploads/";
+
+    PropertyController(OfferService offerService) {
+        this.offerService = offerService;
+    }
 
     @GetMapping("/listings/{id}")
     public String getAllProperties(@PathVariable Long id, Model model) {
@@ -64,11 +72,11 @@ public class PropertyController {
         property.setSeller(seller);
         Property savedProperty = propertyService.saveProperty(property);
         
-        // if (imageFiles != null && imageFiles.length > 0) {
-        //     List<Image> images = saveUploadedImages(imageFiles, savedProperty);
-        //     savedProperty.setImages(images);
-        //     propertyService.saveProperty(savedProperty);
-        // }
+        if (imageFiles != null && imageFiles.length > 0 && !imageFiles[0].isEmpty()) {
+            List<Image> images = saveUploadedImages(imageFiles, savedProperty);
+            savedProperty.setImages(images);
+            propertyService.saveProperty(savedProperty);
+        }
         
         model.addAttribute("property", savedProperty);
         model.addAttribute("user", seller);
@@ -112,8 +120,33 @@ public class PropertyController {
 
     @GetMapping("/delete/{id}")
     public String deleteProperty(@PathVariable Long id) {
-        propertyService.deleteProperty(id);
-        return "redirect:/api/properties/";
+        Property prop = propertyService.getPropertyById(id).orElse(null);
+         if (prop != null) {
+            // Remove and delete images
+            if (prop.getImages() != null) {
+                Iterator<Image> iterator = prop.getImages().iterator();
+                while (iterator.hasNext()) {
+                    Image image = iterator.next();
+                    iterator.remove(); // remove from Property's list
+                    imageService.deleteImage(image.getImageId()); // then delete from DB
+                }
+                propertyService.saveProperty(prop); // persist image removal
+            }
+
+            // Remove and delete offers
+            if (prop.getOffer() != null) {
+                Iterator<Offer> offerIterator = prop.getOffer().iterator();
+                while (offerIterator.hasNext()) {
+                    Offer offer = offerIterator.next();
+                    offerIterator.remove();
+                    offerService.deleteOffer(offer.getOfferId());
+                }
+                propertyService.saveProperty(prop); // optional if offers are cascade removed
+            }
+
+            propertyService.deleteProperty(id);
+        }
+        return "welcome";
     }
     
     // Helper method
