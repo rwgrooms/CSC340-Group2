@@ -194,8 +194,8 @@
           <!-- Additional buttons would go here based on user role:
                - Make Offer (for buyers)
                - Edit/Delete (for sellers or admins) -->
-          <a href="/properties/edit/${property.propertyId}" class="pure-button pure-button-primary">Edit Property</a>
-          <a href="/properties/delete/${property.propertyId}" class="pure-button" 
+          <a href="/api/properties/edit/${property.propertyId}" class="pure-button pure-button-primary">Edit Property</a>
+          <a href="/api/properties/delete/${property.propertyId}" class="pure-button" 
              onclick="return confirm('Are you sure you want to delete this property?');"
              style="background-color: #e74c3c; color: white;">Delete</a>
         </div>

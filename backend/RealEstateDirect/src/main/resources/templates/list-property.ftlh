@@ -164,11 +164,33 @@
       // Handle dropped files
       dropArea.addEventListener('drop', handleDrop, false);
       
-      function handleDrop(e) {
-        const dt = e.dataTransfer;
-        const files = dt.files;
-        handleFiles(files);
+     function handleDrop(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const droppedFiles = [...e.dataTransfer.files].filter(file =>
+        file.type.startsWith('image/')
+      );
+
+      if (droppedFiles.length === 0) return;
+
+      const dataTransfer = new DataTransfer();
+
+      // Optionally keep existing files
+      for (const file of fileInput.files) {
+        dataTransfer.items.add(file);
       }
+
+      // Add dropped files
+      for (const file of droppedFiles) {
+        dataTransfer.items.add(file);
+      }
+
+      fileInput.files = dataTransfer.files;
+
+      handleFiles(droppedFiles); // For preview
+    }
+
       
       // Handle files from input selection
       fileInput.addEventListener('change', function() {

@@ -103,10 +103,10 @@
       <textarea id="description" name="description" placeholder="Enter property description..." rows="5" required>${property.description!''}</textarea>
 
       <label for="askingPrice">Asking Price</label>
-      <input type="number" id="askingPrice" name="askingPrice" value="${property.askingPrice!''}" placeholder="Asking Price ($)" required />
+      <input type="number" id="askingPrice" name="askingPrice" value="${property.askingPrice?string['0.##']!''}" placeholder="Asking Price ($)" required />
 
       <label for="goodFaithDeposit">Good Faith Deposit</label>
-      <input type="number" id="goodFaithDeposit" name="goodFaithDeposit" value="${property.goodFaithDeposit!''}" placeholder="Good Faith Deposit ($)" required />
+      <input type="number" id="goodFaithDeposit" name="goodFaithDeposit" value="${property.goodFaithDeposit?string['0.##']!''}" placeholder="Good Faith Deposit ($)" required />
 
       <!-- Display existing images -->
       <div class="existing-images">
