@@ -32,5 +32,10 @@ public class SidebarController {
         return "welcome";
     }
     
+    @GetMapping("/chat")
+    public String getChatbot() {
+        return "chat";
+    }
+    
 
 }

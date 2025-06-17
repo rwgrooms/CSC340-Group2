@@ -11,9 +11,29 @@ List properties, accept showings and await offers, avoiding realtor fees.
     1. Create/modify/remove customer profile
     2. Search Real Estate Listings
     3. Make an offer/counter-offer 
+    4. Chat with Real Estate Bot
 2. Provider (the seller)
     1. Create/modify/remove provider profile
     2. List Property
     3. View Offers
-    4. Accept/Reject/Counter offers
+    4. Accept/Make Counter offers
 
+## To run the project, be sure to include within application.properties
+spring.application.name=RealEstateApiApplication
+spring.datasource.url=*****
+spring.jpa.hibernate.ddl-auto=update
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.show-sql=true
+
+spring.mvc.view.prefix=/templates/
+spring.mvc.view.suffix=.ftlh
+spring.freemarker.template-loader-path=classpath:/templates
+spring.freemarker.suffix=.ftlh
+spring.freemarker.cache=false
+
+logging.level.org.springframework.security=DEBUG
+logging.level.web=DEBUG
+
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=20MB
+openai.api.key=*****

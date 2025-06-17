@@ -190,14 +190,16 @@
         
         <!-- Action Buttons -->
         <div class="action-buttons">
-          <a href="/properties" class="pure-button">Back to Listings</a>
-          <!-- Additional buttons would go here based on user role:
-               - Make Offer (for buyers)
-               - Edit/Delete (for sellers or admins) -->
-          <a href="/api/properties/edit/${property.propertyId}" class="pure-button pure-button-primary">Edit Property</a>
-          <a href="/api/properties/delete/${property.propertyId}" class="pure-button" 
-             onclick="return confirm('Are you sure you want to delete this property?');"
-             style="background-color: #e74c3c; color: white;">Delete</a>
+          <a href="/api/properties/listings/${currentUser.userId}" class="pure-button">Back to Listings</a>
+
+          <#if currentUser?? && currentUser.role?? && currentUser.role == 1> 
+            <a href="/api/offers/create/${property.propertyId}?userId=${currentUser.userId}" class="pure-button pure-button-primary">Make Offer</a>
+          <#elseif currentUser?? && currentUser.role?? && currentUser.role == 2>
+            <a href="/api/properties/edit/${property.propertyId}" class="pure-button pure-button-primary">Edit Property</a>
+            <a href="/api/properties/delete/${property.propertyId}" class="pure-button" 
+              onclick="return confirm('Are you sure you want to delete this property?');"
+              style="background-color: #e74c3c; color: white;">Delete</a>
+          </#if>
         </div>
       </div>
     </div>

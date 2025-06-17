@@ -230,9 +230,6 @@
       }
       
       function updateFileInput() {
-        // This is a simplified approach - we can't easily remove files from the FileList
-        // In a production app, you would want to track selected files separately
-        // For now, we just note that removal is handled client-side for preview only
         console.log("Note: File removal only affects preview, not the actual submission");
       }
     });

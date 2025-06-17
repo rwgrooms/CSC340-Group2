@@ -6,11 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.realestatedirect.api.security.CustomUserDetailsService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -53,9 +48,13 @@ public class PropertyController {
     }
 
     @GetMapping("/{id}")
-    public String getPropertyById(@PathVariable Long id, Model model) {
+    public String getPropertyById(@PathVariable Long id, 
+    Model model,
+    Principal principal) {
         Property property = propertyService.getPropertyById(id).orElse(null);
         model.addAttribute("property", property);
+        User currentUser = userService.getUserByEmail(principal.getName()).orElse(null);
+        model.addAttribute("currentUser", currentUser);
         return "property-details";
     }
 
@@ -116,7 +115,8 @@ public class PropertyController {
         
         if (savedProperty != null) {
                     // Remove and delete images
-                    if (savedProperty.getImages() != null) {
+                    if (imageFiles != null && imageFiles.length > 0 && !imageFiles[0].isEmpty() && 
+                    savedProperty.getImages() != null) {
                         Iterator<Image> iterator = savedProperty.getImages().iterator();
                         while (iterator.hasNext()) {
                             Image image = iterator.next();
