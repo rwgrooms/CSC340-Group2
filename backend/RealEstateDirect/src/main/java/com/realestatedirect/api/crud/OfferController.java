@@ -82,4 +82,12 @@ public class OfferController {
         offerService.updateOffer(updatedOffer.getOfferId(), updatedOffer);
         return "welcome";
     }
+
+    @GetMapping("/accept/{id}")
+    public Object AcceptOffer(@PathVariable Long id, Model model) {
+        Offer offer = offerService.getOfferById(id).orElse(null);
+        offer.setStatus("Accepted");
+        offerService.updateOffer(id, offer);
+        return "welcome";
+    }
 }

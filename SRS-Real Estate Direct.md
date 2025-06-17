@@ -109,7 +109,7 @@ We will be using Java, with our program being dependent on Spring and SpringBoot
 * FR13: The system will allow the buyer or seller to submit a counter offer price
 * FR14: The system will allow the seller to accept an offer
 * FR15: The system will allow the user to remove their profile
-* FR16: The system will implement an API to allow for property searches of nearby zipcodes
+* FR16: The system will implement an API to enable a chatbot to discuss real estate
 
 #### 3.1.1 User interfaces
 Web pages using HTML, CSS, Pure.CSS, React and JavaScript.

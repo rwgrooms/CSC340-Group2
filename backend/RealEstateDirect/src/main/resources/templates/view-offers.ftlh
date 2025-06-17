@@ -83,13 +83,15 @@
                   </#if>                                 
 
                   <label><strong>Good Faith Deposit:</strong></label>
-                  <input type="text" name="goodFaithDeposit" id="goodFaithDeposit" value="${offer.goodFaithDeposit?string('#,##0.##')}" placeholder="Good Faith Deposit" />
+                  <input type="text" name="goodFaithDeposit" id="goodFaithDeposit" value="${offer.goodFaithDeposit?string('#,##0.##')}" placeholder="Good Faith Deposit" <#if offer.status == "Accepted">disabled</#if> />
                   <br>
                   <label><strong>Offering Price:</strong></label>
-                  <input type="text" name="offerPrice" id="offerPrice" value="${offer.offerPrice?string('#,##0.##')}" placeholder="Offering Price" required />
-                  <br>
+                  <input type="text" name="offerPrice" id="offerPrice" value="${offer.offerPrice?string('#,##0.##')}" placeholder="Offering Price" <#if offer.status == "Accepted">disabled</#if> required />
                   <input type="text" name="status" value="Offer" hidden />
-                  <button type="submit" class="pure-button pure-button-primary">Update Offer</button>
+                  <button type="submit" class="pure-button pure-button-primary" <#if offer.status == "Accepted">disabled</#if>>Update Offer</button>
+                  <br><br>
+                  <label><strong>Accepted Price: ${offer.offerPrice}</strong></label>
+                  <br>
                 <#elseif currentUser?? && currentUser.role?? && currentUser.role == 2>
                   <p><strong>Good Faith Deposit:</strong> ${offer.goodFaithDeposit?string("#,##0.##")}</p>
                   <p><strong>Offering Price:</strong> ${offer.offerPrice?string(",##0.##")}</p>
@@ -99,9 +101,14 @@
                   <input type="text" name="offerPrice" id="offerPrice" value="${offer.offerPrice?string('#,##0.##')}" hidden />
 
                   <input type="text" name="status" value="Counter" hidden />
-                  <input type="text" name="counterOfferPrice" id="counterOfferPrice" value="${(offer.counterOfferPrice!0)?string('#,##0.##')}" placeholder="Counter Offer" />
+                  <input type="text" name="counterOfferPrice" id="counterOfferPrice" value="${(offer.counterOfferPrice!0)?string('#,##0.##')}" placeholder="Counter Offer" <#if offer.status == "Accepted">disabled</#if> />
                   <br><br>
-                  <button type="submit" class="pure-button pure-button-primary">Make Counter Offer</button>
+                  <button type="submit" class="pure-button pure-button-primary" <#if offer.status == "Accepted">disabled</#if>>Make Counter Offer</button>
+                  <br><br>
+                  <a  href="/api/offers/accept/${offer.offerId}" class="pure-button pure-button-primary" <#if offer.status == "Accepted">disabled</#if>>Accept Offer</a>
+                  <br><br>
+                  <label><strong>Accepted Price: ${offer.offerPrice}</strong></label>
+                  <br>
                 </#if>
                 
                 
