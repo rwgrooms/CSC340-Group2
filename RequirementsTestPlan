@@ -1,0 +1,28 @@
+# Real Estate Direct Connect Requirements Testing
+## Actors
+- Seller
+- Buyer
+
+### Use Cases
+#### 1. Buyer and Seller: Create, Edit and Delete Profile:
+1. From the login page, click register, complete form and click Register.
+2. Login, click Edit Profile, update and click Save.
+3. Login, click Edit Profile and click Delete.
+
+#### 2. Seller: While Logged In, List Property, Edit Property, Delete Property
+1. Click List Property, complete form, add images, click Submit Listing.
+2. Click View Listings, click View Details, Click Edit Property, Update form and pictures and click Update Property.
+3. Click View Listings, click View Details, Click Delete Property
+4. Click Logout
+
+#### 3. Buyer: While Logged In, View Listings, Make and Update Offer
+1. Click View Listings, View Details, Make Offer, Complete form and click Submit Offer
+2. Click View Offers, Update Offer Price, click Update Offer
+3. Click Logout
+
+#### 4. Seller: While Logged In, View Offers and Make Counter Offer
+1. Click View Offers, Update Counter Offer Price, click Make Counter Offer
+
+#### 5. Buyer and Seller: While Logged In, Chat Real Estate
+1. Click Chat Real Estate, ask a question and press Enter
+2. Click Logout

@@ -115,7 +115,8 @@ public class PropertyController {
         
         if (savedProperty != null) {
                     // Remove and delete images
-                    if (savedProperty.getImages() != null) {
+                    if (imageFiles != null && imageFiles.length > 0 && !imageFiles[0].isEmpty() && 
+                    savedProperty.getImages() != null) {
                         Iterator<Image> iterator = savedProperty.getImages().iterator();
                         while (iterator.hasNext()) {
                             Image image = iterator.next();
