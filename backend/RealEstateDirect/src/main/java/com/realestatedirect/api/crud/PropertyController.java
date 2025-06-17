@@ -53,9 +53,13 @@ public class PropertyController {
     }
 
     @GetMapping("/{id}")
-    public String getPropertyById(@PathVariable Long id, Model model) {
+    public String getPropertyById(@PathVariable Long id, 
+    Model model,
+    Principal principal) {
         Property property = propertyService.getPropertyById(id).orElse(null);
         model.addAttribute("property", property);
+        User currentUser = userService.getUserByEmail(principal.getName()).orElse(null);
+        model.addAttribute("currentUser", currentUser);
         return "property-details";
     }
 

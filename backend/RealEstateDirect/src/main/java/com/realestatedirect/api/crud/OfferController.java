@@ -45,7 +45,7 @@ public class OfferController {
         User user = userService.getUserById(userId).orElse(null);
         Property property = propertyService.getPropertyById(propertyId).orElse(null);
         offer.setProperty(property);
-        offer.setStatus("Submitted");
+        offer.setStatus("Offer");
         offer.setBuyer(user);
         offerService.saveOffer(offer);
         return "welcome";
@@ -73,13 +73,13 @@ public class OfferController {
     @PostMapping("/update")
     public Object updateOffer(@RequestParam Long propertyId, @RequestParam Long userId, Offer offer) {
         Offer updatedOffer = offerService.getOfferById(offer.getOfferId()).orElse(null);
-        User user = userService.getUserById(userId).orElse(null);
         Property property = propertyService.getPropertyById(propertyId).orElse(null);
         updatedOffer.setProperty(property);
         updatedOffer.setGoodFaithDeposit(offer.getGoodFaithDeposit());
         updatedOffer.setOfferPrice(offer.getOfferPrice());
-        updatedOffer.setStatus("Updated");
-        updatedOffer.setBuyer(user);
+        updatedOffer.setCounterOfferPrice(offer.getCounterOfferPrice());
+        updatedOffer.setStatus(offer.getStatus());
+
         offerService.updateOffer(updatedOffer.getOfferId(), updatedOffer);
         return "welcome";
     }

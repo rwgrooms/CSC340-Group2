@@ -69,20 +69,42 @@
             </#if>
               <p><strong>Location:</strong> ${offer.property.city!''}, ${offer.property.state!''}</p>
               <p><strong>ZIP Code:</strong> ${offer.property.zipCode!''}</p>
-              <p><strong>Asking Price:</strong> $${offer.property.askingPrice?string(",##0.00")}</p>
+              <p><strong>Asking Price:</strong> ${offer.property.askingPrice?string(",##0.00")}</p>
               <form class="pure-form" id="offerForm" method="post" action="/api/offers/update">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <input type="number" name="userId" value="${currentUser.userId}" hidden />
                 <input type="number" name="propertyId" value="${offer.property.propertyId}" hidden />
                 <input type="number" name="offerId" value="${offer.offerId}" hidden />
-                <label><strong>Good Faith Deposit:</strong></label>
-                <input type="text" name="goodFaithDeposit" id="goodFaithDeposit" value="${offer.goodFaithDeposit}" placeholder="Good Faith Deposit" />
-                <br>
-                <label><strong>Offering Price:</strong></label>
-                <input type="text" name="offerPrice" id="offerPrice" value="${offer.offerPrice}" placeholder="Offering Price" required />
-                <#if currentUser?? && currentUser.role?? && currentUser.role == 1> <!-- Assuming role 1 is for buyers -->
-                          <button type="submit" class="pure-button pure-button-primary">Update Offer</button>
+                
+                <#if currentUser?? && currentUser.role?? && currentUser.role == 1> 
+                  <#if offer?? && offer.counterOfferPrice??>
+                    <p><strong>Counter Offer:</strong> ${offer.counterOfferPrice?string(",##0.00")}</p>
+                    <input type="text" name="counterOfferPrice" id="counterOfferPrice" value="${offer.counterOfferPrice?string('#,##0.##')}" hidden />
+                  </#if>                                 
+
+                  <label><strong>Good Faith Deposit:</strong></label>
+                  <input type="text" name="goodFaithDeposit" id="goodFaithDeposit" value="${offer.goodFaithDeposit?string('#,##0.##')}" placeholder="Good Faith Deposit" />
+                  <br>
+                  <label><strong>Offering Price:</strong></label>
+                  <input type="text" name="offerPrice" id="offerPrice" value="${offer.offerPrice?string('#,##0.##')}" placeholder="Offering Price" required />
+                  <br>
+                  <input type="text" name="status" value="Offer" hidden />
+                  <button type="submit" class="pure-button pure-button-primary">Update Offer</button>
+                <#elseif currentUser?? && currentUser.role?? && currentUser.role == 2>
+                  <p><strong>Good Faith Deposit:</strong> ${offer.goodFaithDeposit?string("#,##0.##")}</p>
+                  <p><strong>Offering Price:</strong> ${offer.offerPrice?string(",##0.##")}</p>
+                  <label><strong>Counter Offer:</strong></label>
+
+                  <input type="text" name="goodFaithDeposit" id="goodFaithDeposit" value="${offer.goodFaithDeposit?string('#,##0.##')}" hidden />
+                  <input type="text" name="offerPrice" id="offerPrice" value="${offer.offerPrice?string('#,##0.##')}" hidden />
+
+                  <input type="text" name="status" value="Counter" hidden />
+                  <input type="text" name="counterOfferPrice" id="counterOfferPrice" value="${(offer.counterOfferPrice!0)?string('#,##0.##')}" placeholder="Counter Offer" />
+                  <br><br>
+                  <button type="submit" class="pure-button pure-button-primary">Make Counter Offer</button>
                 </#if>
+                
+                
               </form>
           </div>
         </#list>
@@ -105,6 +127,7 @@
     document.getElementById("offerForm").addEventListener("submit", function () {
       sanitizeNumericField(document.getElementById("goodFaithDeposit"));
       sanitizeNumericField(document.getElementById("offerPrice"));
+      sanitizeNumericField(document.getElementById("counterOfferPrice"));
     });
   </script>
 </body>

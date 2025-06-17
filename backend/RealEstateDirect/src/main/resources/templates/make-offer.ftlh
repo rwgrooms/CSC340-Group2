@@ -70,12 +70,13 @@
 <body>
   <div id="root">
     <form class="pure-form" id="offerForm" method="post" action="/api/offers/create">
-      <img src="images/front.png" alt="Property Image" />
+      <img src="${property.images[0].path}" alt="Property image" />
       <label>Asking Price</label>
       <div class="readonly-field">${property.askingPrice}</div>
       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
       <input type="number" name="userId" value="${currentUser.userId}" hidden />
       <input type="number" name="propertyId" value="${property.propertyId}" hidden />
+      <input type="text" name="status" value="Offer" hidden />
       <input type="text" name="AskingPrice" id="askingPrice" value="${property.askingPrice}" hidden />
       <label>Good Faith Deposit</label>
       <input type="text" name="goodFaithDeposit" id="goodFaithDeposit" value="${property.goodFaithDeposit}" placeholder="Good Faith Deposit" />
