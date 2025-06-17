@@ -17,8 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Configuration
@@ -31,12 +29,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/logout"))
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/logout", "/chat/stream"))
             .headers(headers -> headers
                 .frameOptions(frame -> frame.sameOrigin())
             )
             .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/", "/users/register/**", "/login", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/chat", "/chat/**").permitAll()
                 .requestMatchers("/dashboard/**", "/sidebar/**","/welcome/**").hasAnyRole("BUYER", "SELLER")
                 // .requestMatchers("/mod/**").hasAnyRole("KNIGHT", "MASTER")
                 .anyRequest().authenticated())
