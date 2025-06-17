@@ -90,7 +90,9 @@
                   <input type="text" name="status" value="Offer" hidden />
                   <button type="submit" class="pure-button pure-button-primary" <#if offer.status == "Accepted">disabled</#if>>Update Offer</button>
                   <br><br>
+                  <#if offer.status == "Accepted">
                   <label><strong>Accepted Price: ${offer.offerPrice}</strong></label>
+                  </#if>
                   <br>
                 <#elseif currentUser?? && currentUser.role?? && currentUser.role == 2>
                   <p><strong>Good Faith Deposit:</strong> ${offer.goodFaithDeposit?string("#,##0.##")}</p>
@@ -107,7 +109,9 @@
                   <br><br>
                   <a  href="/api/offers/accept/${offer.offerId}" class="pure-button pure-button-primary" <#if offer.status == "Accepted">disabled</#if>>Accept Offer</a>
                   <br><br>
+                  <#if offer.status == "Accepted">
                   <label><strong>Accepted Price: ${offer.offerPrice}</strong></label>
+                  </#if>
                   <br>
                 </#if>
                 
